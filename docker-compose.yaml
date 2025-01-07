@@ -32,9 +32,9 @@ services:
       tail -f /dev/null
       '
     volumes:
-      - "${DATA_DIR}/components/mongodb/data/db:/data/db"
-      - "${DATA_DIR}/components/mongodb/data/logs:/data/logs"
-      - "${DATA_DIR}/components/mongodb/data/conf:/etc/mongo"
+      - "./data/components/mongodb/data/db:/data/db"
+      - "./data/components/mongodb/data/logs:/data/logs"
+      - "./data/components/mongodb/data/conf:/etc/mongo"
     environment:
       - TZ=Asia/Shanghai
       - wiredTigerCacheSizeGB=1
@@ -51,8 +51,8 @@ services:
     image: "${REDIS_IMAGE}"
     container_name: redis
     volumes:
-      - "${DATA_DIR}/components/redis/data:/data"
-      - "${DATA_DIR}/components/redis/config/redis.conf:/usr/local/redis/config/redis.conf"
+      - "./data/components/redis/data:/data"
+      - "./data/components/redis/config/redis.conf:/usr/local/redis/config/redis.conf"
     environment:
       TZ: Asia/Shanghai
     restart: always
@@ -88,7 +88,7 @@ services:
     user: root
     restart: always
     volumes:
-      - "${DATA_DIR}/components/kafka:/bitnami/kafka"
+      - "./data/components/kafka:/bitnami/kafka"
     environment:
       TZ: Asia/Shanghai
       KAFKA_CFG_NODE_ID: 0
@@ -110,8 +110,8 @@ services:
       - "${MINIO_CONSOLE_PORT}:9090"
     container_name: minio
     volumes:
-      - "${DATA_DIR}/components/mnt/data:/data"
-      - "${DATA_DIR}/components/mnt/config:/root/.minio"
+      - "./data/components/mnt/data:/data"
+      - "./data/components/mnt/config:/root/.minio"
     environment:
       TZ: Asia/Shanghai
       MINIO_ROOT_USER: "${MINIO_ACCESS_KEY_ID}"
@@ -148,7 +148,7 @@ services:
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./config/instance-down-rules.yml:/etc/prometheus/instance-down-rules.yml
-      - ${DATA_DIR}/components/prometheus/data:/prometheus
+      - ./data/components/prometheus/data:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -163,8 +163,8 @@ services:
     hostname: alertmanager
     restart: always
     volumes:
-      - ${DATA_DIR}/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
-      - ${DATA_DIR}/config/email.tmpl:/etc/alertmanager/email.tmpl
+      - ./data/config/alertmanager.yml:/etc/alertmanager/alertmanager.yml
+      - ./data/config/email.tmpl:/etc/alertmanager/email.tmpl
     ports:
       - "${ALERT_MANAGER_PORT}:9093"
     networks:
@@ -179,7 +179,7 @@ services:
     ports:
       - "${GRAFANA_PORT}:3000"
     volumes:
-      - "${DATA_DIR}/components/grafana:/var/lib/grafana"
+      - "./data/components/grafana:/var/lib/grafana"
     environment:
       - GF_SECURITY_ALLOW_EMBEDDING=true
       - GF_SESSION_COOKIE_SAMESITE=none
